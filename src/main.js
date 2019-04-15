@@ -4,10 +4,20 @@ import VueRouter from 'vue-router';
 import filters from './filters';
 import routes from './routers';
 import Alert from './libs/alert';
+import { get, post, apiPaths } from './libs/api';
 import store from './vuex/user';
 import FastClick from 'fastclick';
+import axios from 'axios';
+
 Vue.use(VueRouter);
 Vue.use(Alert);
+
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
+axios.defaults.timeout = 10000;
+
+Vue.prototype.$apiPaths = apiPaths;
+Vue.prototype.$get = get;
+Vue.prototype.$post = post;
 
 $.ajaxSettings.crossDomain = true;
 
