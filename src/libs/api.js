@@ -7,7 +7,8 @@ export let apiPaths = {
     GET_TOPICS: '/topics',
     GET_TOPIC_DETAIL: '/topic/',
     COLLECT_TOPIC: '/topic_collect/collect',
-    UNCOLLECT_TOPIC: '/topic_collect/de_collect'
+    UNCOLLECT_TOPIC: '/topic_collect/de_collect',
+    CHECK_ACCESS_TOKEN: '/accesstoken'
 };
 
 export function get(url, params) {

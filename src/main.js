@@ -32,8 +32,8 @@ const router = new VueRouter({
 FastClick.attach(document.body);
 
 // 处理刷新的时候vuex被清空但是用户已经登录的情况
-if (window.sessionStorage.user) {
-    store.dispatch('setUserInfo', JSON.parse(window.sessionStorage.user));
+if (window.localStorage.user) {
+    store.dispatch('setUserInfo', JSON.parse(window.localStorage.user));
 }
 
 // 登录中间验证，页面需要登录而没有登录的情况直接跳转登录

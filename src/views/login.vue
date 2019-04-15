@@ -14,7 +14,6 @@
 </template>
 
 <script>
-    import $ from 'webpack-zepto';
     import nvHead from '../components/header.vue';
 
     export default {
@@ -24,37 +23,32 @@
             };
         },
         methods: {
+            loginSuccess(res) {
+                let user = {
+                    loginname: res.loginname,
+                    avatar_url: res.avatar_url,
+                    userId: res.id,
+                    token: this.token
+                };
+                window.window.localStorage.user = JSON.stringify(user);
+                this.$store.dispatch('setUserInfo', user);
+                let redirect = decodeURIComponent(this.$route.query.redirect || '/');
+                this.$router.push({
+                    path: redirect
+                });
+            },
+            loginFailure(res) {
+                var error = JSON.parse(res.responseText);
+                this.$alert(error.error_msg);
+            },
             logon() {
                 if (this.token === '') {
                     this.$alert('令牌格式错误,应为36位UUID字符串');
                     return false;
                 }
-                $.ajax({
-                    type: 'POST',
-                    url: 'https://cnodejs.org/api/v1/accesstoken',
-                    data: {
-                        accesstoken: this.token
-                    },
-                    dataType: 'json',
-                    success: (res) => {
-                        let user = {
-                            loginname: res.loginname,
-                            avatar_url: res.avatar_url,
-                            userId: res.id,
-                            token: this.token
-                        };
-                        window.window.sessionStorage.user = JSON.stringify(user);
-                        this.$store.dispatch('setUserInfo', user);
-                        let redirect = decodeURIComponent(this.$route.query.redirect || '/');
-                        this.$router.push({
-                            path: redirect
-                        });
-                    },
-                    error: (res) => {
-                        var error = JSON.parse(res.responseText);
-                        this.$alert(error.error_msg);
-                    }
-                });
+
+                let url = this.$apiPaths.CHECK_ACCESS_TOKEN;
+                this.$post(url, { accesstoken: this.token }).then(this.loginSuccess).catch(this.loginFailure);
             }
         },
         components: {
