@@ -115,8 +115,9 @@
             // 获取url传的tab参数
             this.topicId = this.$route.params.id;
 
+            let url = `${this.$apiPaths.GET_TOPIC_DETAIL}${this.topicId}`;
             // 加载主题数据
-            $.get('https://cnodejs.org/api/v1/topic/' + this.topicId, (d) => {
+            this.$get(url).then((d) => {
                 if (d && d.data) {
                     this.topic = d.data;
                 } else {
